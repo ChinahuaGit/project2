@@ -8,32 +8,32 @@
 // };
 exports.up = function(knex) {
   return knex.schema.createTableIfNotExists('dept', table => {
-    table.increments('id').primary();
+    table.primary('dept_id');
     table.string('name').unique();
     table.integer('dept_id').unique();
     table.timestamps(true, true);
   })
   .then(() => knex.schema.createTableIfNotExists('class', table => {
-    table.increments('id').primary();
-    table.string('name').unique();
-    table.integer('class_id').unique();
+    table.primary(['class_id', 'dept_id']);
+    table.string('name');
+    table.integer('class_id');
+    table.integer('dept_id').unsigned();
     table.timestamps(true, true);
   }))
   .then(() => knex.schema.table('class', table => {
-    table.integer('dept_id').unsigned();
     table.foreign('dept_id').references('dept.dept_id');
   }))
   .then(() => knex.schema.createTableIfNotExists('subclass', table => {
-    table.increments('id').primary();
-    table.string('name').unique();
-    table.integer('subclass_id').unique();
+    table.primary(['subclass_id', 'class_id', 'dept_id']);
+    table.string('name');
+    table.integer('subclass_id');
+    table.integer('class_id').unsigned();
+    table.integer('dept_id').unsigned();
     table.timestamps(true, true);
   }))
   .then(() => knex.schema.table('subclass', table => {
-    table.integer('dept_id').unsigned();
     table.foreign('dept_id').references('dept.dept_id');
-    table.integer('class_id').unsigned();
-    table.foreign('class_id').references('class.class_id');
+    table.foreign('class_id').references(['class.class_id', 'class.dept_id']);
   }))
   .then(() => knex.schema.createTableIfNotExists('byo', table => {
     table.increments('id').primary();
@@ -42,7 +42,7 @@ exports.up = function(knex) {
     table.timestamps(true, true);
   }))
   .then(() => knex.schema.createTableIfNotExists('sku', table => {
-    table.increments('id').primary();
+    table.primary('sku');
     table.integer('sku').unique();
     table.string('desc');
     table.string('type');
@@ -53,9 +53,9 @@ exports.up = function(knex) {
     table.integer('dept_id').unsigned();
     table.foreign('dept_id').references('dept.dept_id');
     table.integer('class_id').unsigned();
-    table.foreign('class_id').references('class.class_id');
+    table.foreign('class_id').references(['class.class_id', 'class.dept_id']);
     table.integer('subclass_id').unsigned();
-    table.foreign('subclass_id').references('subclass.subclass_id');
+    table.foreign('subclass_id').references(['subclass.subclass_id', 'subclass.class_id', 'subclass.dept_id']);
   }))
   .then(() => knex.schema.createTableIfNotExists('byo_desc', table => {
     table.increments('id').primary();
