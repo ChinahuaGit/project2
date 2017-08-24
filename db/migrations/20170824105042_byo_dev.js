@@ -10,57 +10,65 @@ exports.up = function(knex) {
   return knex.schema.createTableIfNotExists('dept', table => {
     table.increments('id').primary();
     table.string('name').unique();
-    table.string('dept_id');
+    table.integer('dept_id').unique();
     table.timestamps(true, true);
   })
   .then(() => knex.schema.createTableIfNotExists('class', table => {
     table.increments('id').primary();
     table.string('name').unique();
-    table.string('dept_id');
-    table.string('class_id');
+    table.integer('class_id').unique();
     table.timestamps(true, true);
   }))
-
+  .then(() => knex.schema.table('class', table => {
+    table.integer('dept_id').unsigned();
+    table.foreign('dept_id').references('dept.dept_id');
+  }))
   .then(() => knex.schema.createTableIfNotExists('subclass', table => {
     table.increments('id').primary();
     table.string('name').unique();
-    table.string('dept_id');
-    table.string('class_id');
-    table.string('subclass_id');
+    table.integer('subclass_id').unique();
     table.timestamps(true, true);
   }))
-
+  .then(() => knex.schema.table('subclass', table => {
+    table.integer('dept_id').unsigned();
+    table.foreign('dept_id').references('dept.dept_id');
+    table.integer('class_id').unsigned();
+    table.foreign('class_id').references('class.class_id');
+  }))
   .then(() => knex.schema.createTableIfNotExists('byo', table => {
     table.increments('id').primary();
     table.string('name');
-    table.string('number');
+    table.integer('number').unique();
     table.timestamps(true, true);
   }))
-
   .then(() => knex.schema.createTableIfNotExists('sku', table => {
     table.increments('id').primary();
-    table.string('sku');
+    table.integer('sku').unique();
     table.string('desc');
     table.string('type');
-    table.string('dept_id');
-    table.string('class_id');
-    table.string('subclass_id');
     table.string('reg_desc');
     table.timestamps(true, true);
   }))
-
+  .then(() => knex.schema.table('sku', table => {
+    table.integer('dept_id').unsigned();
+    table.foreign('dept_id').references('dept.dept_id');
+    table.integer('class_id').unsigned();
+    table.foreign('class_id').references('class.class_id');
+    table.integer('subclass_id').unsigned();
+    table.foreign('subclass_id').references('subclass.subclass_id');
+  }))
   .then(() => knex.schema.createTableIfNotExists('byo_desc', table => {
     table.increments('id').primary();
     table.string('desc');
     table.string('reg_desc');
     table.timestamps(true, true);
+  }))
+  .then(() => knex.schema.table('byo_desc', table => {
+    table.integer('byo_id').unsigned();
+    table.foreign('byo_id').references('byo.number');
+    table.integer('sku').unsigned();
+    table.foreign('sku').references('sku.sku');
   }));
-
-
-  // .then(() => knex.schema.table('albums', table => {
-  //   table.integer('artist_id').unsigned();
-  //   table.foreign('artist_id').references('artists.id');
-  // }));
 };
 
 exports.down = function(knex, Promise) {
