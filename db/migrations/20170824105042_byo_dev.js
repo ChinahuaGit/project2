@@ -23,15 +23,15 @@ exports.up = function(knex) {
   .then(() => knex.schema.table('class', table => {
     table.foreign('dept_id').references('dept.dept_id');
   }))
-  .then(() => knex.schema.createTableIfNotExists('subclass', table => {
-    table.primary(['subclass_id', 'class_id', 'dept_id']);
+  .then(() => knex.schema.createTableIfNotExists('sub_class', table => {
+    table.primary(['sub_class_id', 'class_id', 'dept_id']);
     table.string('name');
-    table.integer('subclass_id');
+    table.integer('sub_class_id');
     table.integer('class_id').unsigned();
     table.integer('dept_id').unsigned();
     table.timestamps(true, true);
   }))
-  .then(() => knex.schema.table('subclass', table => {
+  .then(() => knex.schema.table('sub_class', table => {
     table.foreign('dept_id').references('dept.dept_id');
     table.foreign('class_id').references(['class.class_id', 'class.dept_id']);
   }))
@@ -54,8 +54,8 @@ exports.up = function(knex) {
     table.foreign('dept_id').references('dept.dept_id');
     table.integer('class_id').unsigned();
     table.foreign('class_id').references(['class.class_id', 'class.dept_id']);
-    table.integer('subclass_id').unsigned();
-    table.foreign('subclass_id').references(['subclass.subclass_id', 'subclass.class_id', 'subclass.dept_id']);
+    table.integer('sub_class_id').unsigned();
+    table.foreign('sub_class_id').references(['sub_class.sub_class_id', 'sub_class.class_id', 'sub_class.dept_id']);
   }))
   .then(() => knex.schema.createTableIfNotExists('byo_desc', table => {
     table.increments('id').primary();
@@ -75,7 +75,7 @@ exports.down = function(knex, Promise) {
   return Promise.all([
     knex.schema.dropTableIfExists('dept'),
     knex.schema.dropTableIfExists('class'),
-    knex.schema.dropTableIfExists('subclass'),
+    knex.schema.dropTableIfExists('sub_class'),
     knex.schema.dropTableIfExists('byo'),
     knex.schema.dropTableIfExists('sku'),
     knex.schema.dropTableIfExists('byo_desc')
