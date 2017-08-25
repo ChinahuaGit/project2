@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
-const byo_desc = require('./routes/byo_descs');
+const byo_descs = require('./routes/byo_descs');
 const byos = require('./routes/byos');
 const classes = require('./routes/classes');
 const depts = require('./routes/depts');
@@ -23,12 +23,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-// app.use('/byo_descs', byo_desc);
-// app.use('/byos', byos);
+app.use('/byo_descs', byo_descs);
+app.use('/byos', byos);
 app.use('/classes', classes);
 app.use('/depts', depts);
-// app.use('/sku', sku);
-// app.use('/subclasses', subclasses);
+app.use('/sku', sku);
+app.use('/subclasses', sub_classes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
