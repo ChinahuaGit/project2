@@ -1,47 +1,35 @@
 const express = require('express');
+const Sku = require('../models/skus');
+
 const router = express.Router();
-const SubClasses = require('../models/sub_classes');
 
-
-async function getSubClasse(id) {
-  return SubClasses.where({
-    id: id
-  }).fetch({
-    withRelated: {
-      movies: function(qb) {
-        qb.orderBy("subclass_id", "subclass");
-      }
-    }
-  });
+async function getSku(sku) {
+  return Sku.where({
+    sku: sku
+  }).fetch();
 }
-async function getSubClasses() {
-  return SubClasses.fetchAll({
-    withRelated: {
-      movies: function(qb) {
-        qb.orderBy("subclass_id", "subclass");
-      }
-    }
-  });
+async function getSkuDeptClassSubclass(sku) {
+  return Sku.where({
+    sku: sku
+  }).fetch();
 }
 // GET ALL THE DIRECTORS
 router.get('/html', function(req, res, next) {
-  getSubClasses().then((depts) => {
-    res.render('depts', {
-      'depts': depts.toJSON()
+  getSku().then(byo_descs => {
+    res.render('byo_desc', {
+      byo_desc: byo_descs.toJSON()
     });
   });
 });
 
 router.get('/', function(req, res, next) {
-  getSubClasses().then((depts) => {
-    res.json(depts.toJSON());
-  });
+  res.status(700).send("Too many SKUs. Narrow Criteria please.");
 });
 
 // GET A DIRECTOR WITH ID=?
 router.get('/:id', function(req, res, next) {
-  getSubClass(req.params.id)
-    .then((d) => {
+  getSku(req.params.id)
+    .then(d => {
       if (d == null) {
         res.status(404).send("not found");
       } else {
@@ -49,5 +37,6 @@ router.get('/:id', function(req, res, next) {
       }
     });
 });
+
 
 module.exports = router;
