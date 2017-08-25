@@ -3,19 +3,19 @@ const Byo_Descs = require('../models/byo_desc');
 
 const router = express.Router();
 
-async function getByo_Desc(id) {
+async function getByo_DescBySku(sku) {
   return Byo_Descs.where({
-    byo_id: id
-  }).fetch();
+    sku: sku
+  }).fetchAll();
 }
 async function getByo_Descs() {
   return Byo_Descs.fetchAll();
 }
 // GET ALL THE DIRECTORS
 router.get('/html', function(req, res, next) {
-  getByo_Descs().then(byos => {
-    res.render('byo', {
-      byo: byos.toJSON()
+  getByo_Descs().then(byo_descs => {
+    res.render('byo_desc', {
+      byo_desc: byo_descs.toJSON()
     });
   });
 });
@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
 
 // GET A DIRECTOR WITH ID=?
 router.get('/:id', function(req, res, next) {
-  getByo_Desc(req.params.id)
+  getByo_DescBySku(req.params.id)
     .then(d => {
       if (d == null) {
         res.status(404).send("not found");

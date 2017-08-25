@@ -5,7 +5,7 @@ const router = express.Router();
 
 async function getByo(id) {
   return Byos.where({
-    byo_id: id
+    number: id
   }).fetch();
 }
 async function getByos() {

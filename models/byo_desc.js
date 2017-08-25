@@ -3,7 +3,7 @@ require('./skus')
 require('./byos')
 
 const Byo_desc = Bookshelf.Model.extend({
-  tableName: 'class',
+  tableName: 'byo_desc',
   hasTimestamps: true,
   sku: function () {
     return this.belongsTo('Sku');
