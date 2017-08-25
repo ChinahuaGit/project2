@@ -3,7 +3,7 @@ require('./depts')
 require('./classes')
 
 const Sub_Class = Bookshelf.Model.extend({
-  tableName: 'sub_class',
+  tableName: 'subclass',
   hasTimestamps: true,
   dept: function () {
     return this.belongsTo('Class');

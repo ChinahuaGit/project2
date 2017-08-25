@@ -3,44 +3,35 @@ const router = express.Router();
 const SubClasses = require('../models/sub_classes');
 
 
-async function getSubClasse(id) {
+async function getSubClassesDeptAndClassId(dept_id, class_id) {
   return SubClasses.where({
-    id: id
-  }).fetch({
-    withRelated: {
-      movies: function(qb) {
-        qb.orderBy("subclass_id", "subclass");
-      }
-    }
-  });
+    // console.log(subclass;
+    dept_id: dept_id, class_id: class_id
+  }).fetchAll();
 }
 async function getSubClasses() {
   return SubClasses.fetchAll({
-    withRelated: {
-      movies: function(qb) {
-        qb.orderBy("subclass_id", "subclass");
-      }
-    }
+
   });
 }
 // GET ALL THE DIRECTORS
 router.get('/html', function(req, res, next) {
-  getSubClasses().then((depts) => {
-    res.render('depts', {
-      'depts': depts.toJSON()
+  getSubClasses().then((sub_classes) => {
+    res.render('subclass', {
+      'subclass': sub_classes.toJSON()
     });
   });
 });
 
 router.get('/', function(req, res, next) {
-  getSubClasses().then((depts) => {
-    res.json(depts.toJSON());
+  getSubClasses().then((sub_classes) => {
+    res.json(sub_classes.toJSON());
   });
 });
 
 // GET A DIRECTOR WITH ID=?
-router.get('/:id', function(req, res, next) {
-  getSubClass(req.params.id)
+router.get('/:did/:cid', function(req, res, next) {
+  getSubClassesDeptAndClassId(req.params.did, req.params.cid)
     .then((d) => {
       if (d == null) {
         res.status(404).send("not found");
