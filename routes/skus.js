@@ -13,7 +13,7 @@ async function getSkuDeptClassSubclass(sku) {
     sku: sku
   }).fetch();
 }
-// GET ALL THE DIRECTORS
+// GET ALL THE SKUs
 router.get('/html', function(req, res, next) {
   getSku().then(byo_descs => {
     res.render('byo_desc', {
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
   res.status(700).send("Too many SKUs. Narrow Criteria please.");
 });
 
-// GET A DIRECTOR WITH ID=?
+// GET A SKU WITH ID=?
 router.get('/:id', function(req, res, next) {
   getSku(req.params.id)
     .then(d => {

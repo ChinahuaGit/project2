@@ -11,7 +11,7 @@ async function getByo(id) {
 async function getByos() {
   return Byos.fetchAll();
 }
-// GET ALL THE DIRECTORS
+// GET ALL THE BYO
 router.get('/html', function(req, res, next) {
   getByos().then(byos => {
     res.render('byo', {
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-// GET A DIRECTOR WITH ID=?
+// GET A BYO WITH ID=?
 router.get('/:id', function(req, res, next) {
   getByo(req.params.id)
     .then((d) => {

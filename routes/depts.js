@@ -11,7 +11,7 @@ async function getDept(id) {
 async function getDepts() {
   return Depts.fetchAll();
 }
-// GET ALL THE DIRECTORS
+// GET ALL THE Departments
 router.get('/html', function(req, res, next) {
   getDepts().then(depts => {
     res.render('dept', {
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-// GET A DIRECTOR WITH ID=?
+// GET A Departments WITH ID=?
 router.get('/:id', function(req, res, next) {
   getDept(req.params.id)
     .then((d) => {

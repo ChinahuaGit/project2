@@ -11,7 +11,7 @@ async function getClassesByDeptId(id) {
 async function getClasses() {
   return Classes.fetchAll();
 }
-// GET ALL THE DIRECTORS
+// GET ALL THE Classes
 router.get('/html', function(req, res, next) {
   getClasses().then(classes => {
     res.render('class', {
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-// GET A DIRECTOR WITH ID=?
+// GET A Classes WITH ID=?
 router.get('/:id', function(req, res, next) {
   getClassesByDeptId(req.params.id)
     .then((d) => {

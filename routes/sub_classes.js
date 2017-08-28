@@ -14,7 +14,7 @@ async function getSubClasses() {
 
   });
 }
-// GET ALL THE DIRECTORS
+// GET ALL THE SubClasses
 router.get('/html', function(req, res, next) {
   getSubClasses().then((sub_classes) => {
     res.render('subclass', {
@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-// GET A DIRECTOR WITH ID=?
+// GET A sub_class WITH ID=?
 router.get('/:did/:cid', function(req, res, next) {
   getSubClassesDeptAndClassId(req.params.did, req.params.cid)
     .then((d) => {
